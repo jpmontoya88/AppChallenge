@@ -21,7 +21,7 @@ struct ContentView: View {
                 List(apiModel.response.results){ movie in
                     NavigationLink(destination: Detail_view(txt_string: movie.sinopsis)){
                         HStack{
-                            URLImageView()
+                            URLImageView(urlString: movie.image)
                             Text("\(movie.title)")
                         }
                         
