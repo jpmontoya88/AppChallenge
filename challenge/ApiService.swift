@@ -13,7 +13,7 @@ enum enum_error_type: Error {
     case connection(description: String)
 }
 
-func api_request<T>(with url: URL)-> AnyPublisher<[T], enum_error_type> where T:Decodable{
+func api_request<T>(with url: URL)-> AnyPublisher<T, enum_error_type> where T:Decodable{
     
     let request = URLRequest(url: url)
     return URLSession.shared.dataTaskPublisher(for: request)
@@ -26,10 +26,10 @@ func api_request<T>(with url: URL)-> AnyPublisher<[T], enum_error_type> where T:
         .eraseToAnyPublisher()
 }
 
-func decode<T>(data: Data)->AnyPublisher<[T], enum_error_type> where T:Decodable{
+func decode<T>(data: Data)->AnyPublisher<T, enum_error_type> where T:Decodable{
     let decoder = JSONDecoder()
     return Just(data)
-        .decode(type: [T].self, decoder: decoder)
+        .decode(type: T.self, decoder: decoder)
         .mapError{ error in
             enum_error_type.parsing(description: error.localizedDescription)
         }

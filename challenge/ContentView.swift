@@ -10,22 +10,34 @@ import SwiftUI
 struct ContentView: View {
     
     @ObservedObject var apiModel = ApiServiceModel()
+    @State var listLoaded: Bool = false
     
     var body: some View {
         NavigationView{
             VStack{
-                List(apiModel.response){ user in
-                    NavigationLink(destination: Detail_view(txt_string: user.title)){
-                        Text("\(user.id)")
+                
+                Text("PAGE: \(apiModel.response.page)")
+                
+                List(apiModel.response.results){ movie in
+                    NavigationLink(destination: Detail_view(txt_string: movie.sinopsis)){
+                        HStack{
+                            URLImageView()
+                            Text("\(movie.title)")
+                        }
+                        
                         
                     }
                 }
+                
             }
             .onAppear{
-                self.apiModel.get_data(with_url: URL(string: "https://jsonplaceholder.typicode.com/posts")!)
+                self.apiModel.get_data(with_url: URL(string: Constants.Api.popularurl)!)
             }
+            .navigationTitle("MOVIES")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationBarTitle("MOVIES")
+        
+
     }
 }
 
@@ -36,6 +48,7 @@ struct Detail_view: View{
     var body: some View{
         VStack{
             Text(txt_string)
+                .padding()
         }
     }
 }

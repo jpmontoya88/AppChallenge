@@ -16,6 +16,8 @@
 		F1F7257D295289D900416A5E /* challengeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F7257C295289D900416A5E /* challengeUITestsLaunchTests.swift */; };
 		F1F7258A29528B9800416A5E /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F7258929528B9800416A5E /* ApiService.swift */; };
 		F1F7258C29528F8800416A5E /* ApiServiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F7258B29528F8800416A5E /* ApiServiceModel.swift */; };
+		F1FA30E829529CAD00B6C92F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1FA30E729529CAD00B6C92F /* Constants.swift */; };
+		F1FA30EA2952B4F700B6C92F /* URLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1FA30E92952B4F700B6C92F /* URLImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		F1F7257C295289D900416A5E /* challengeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = challengeUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		F1F7258929528B9800416A5E /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		F1F7258B29528F8800416A5E /* ApiServiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiServiceModel.swift; sourceTree = "<group>"; };
+		F1FA30E729529CAD00B6C92F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		F1FA30E92952B4F700B6C92F /* URLImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +107,8 @@
 				F1F7258929528B9800416A5E /* ApiService.swift */,
 				F1F7258B29528F8800416A5E /* ApiServiceModel.swift */,
 				F1F72560295289D800416A5E /* ContentView.swift */,
+				F1FA30E92952B4F700B6C92F /* URLImageView.swift */,
+				F1FA30E6295297B400B6C92F /* Resources */,
 				F1F72562295289D900416A5E /* Assets.xcassets */,
 				F1F72564295289D900416A5E /* challenge.entitlements */,
 				F1F72565295289D900416A5E /* Preview Content */,
@@ -133,6 +139,14 @@
 				F1F7257C295289D900416A5E /* challengeUITestsLaunchTests.swift */,
 			);
 			path = challengeUITests;
+			sourceTree = "<group>";
+		};
+		F1FA30E6295297B400B6C92F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F1FA30E729529CAD00B6C92F /* Constants.swift */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,7 +279,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1FA30E829529CAD00B6C92F /* Constants.swift in Sources */,
 				F1F7258C29528F8800416A5E /* ApiServiceModel.swift in Sources */,
+				F1FA30EA2952B4F700B6C92F /* URLImageView.swift in Sources */,
 				F1F72561295289D800416A5E /* ContentView.swift in Sources */,
 				F1F7255F295289D800416A5E /* challengeApp.swift in Sources */,
 				F1F7258A29528B9800416A5E /* ApiService.swift in Sources */,
