@@ -17,17 +17,17 @@ struct Movie: Codable, Identifiable{
     
     let id: Int
     let title: String
-    let popularity: Double
+    let vote: Float
     let sinopsis: String
     let releaseDate: String
     let image: String
     
     enum CodingKeys: String, CodingKey {
         case id
-        case title
-        case popularity
+        case title = "name"
+        case vote = "vote_average"
         case sinopsis = "overview"
-        case releaseDate = "release_date"
+        case releaseDate = "first_air_date"
         case image = "poster_path"
     }
     

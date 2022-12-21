@@ -17,8 +17,8 @@ struct URLImageView: View {
     var body: some View {
         Image(uiImage: urlImageModel.image ?? URLImageView.placeholderImage!)
             .resizable()
-            .scaledToFill()
-            .frame(width:50, height: 50)
+            .scaledToFit()
+            //.frame(width:50, height: 50)
     }
     
     static var placeholderImage = UIImage(named: "placeholder")
