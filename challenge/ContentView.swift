@@ -12,15 +12,51 @@ struct ContentView: View {
     @ObservedObject var apiModel = ApiServiceModel()
     @State var listLoaded: Bool = false
     
+    @State private var filter = 0
+    
     private let columns = [
         GridItem(.adaptive(minimum: 170))
     ]
+    
+    init() {
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(named: "Gris")
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
+    }
     
     var body: some View {
         
         NavigationView{
             
             ScrollView{
+                
+                Picker("What is your favorite color?", selection: $filter) {
+                   Text("Popular").tag(0)
+                   Text("Top Rated").tag(1)
+                   Text("On TV").tag(2)
+                   Text("Airing Today").tag(3)
+               }
+                .pickerStyle(.segmented)
+                .foregroundColor(.white)
+                .padding()
+                .onChange(of: filter){ value in
+                    switch value {
+                        case 0:
+                            self.apiModel.get_data(with_url: URL(string: Constants.Api.popularurl)!)
+                        
+                        case 1:
+                            self.apiModel.get_data(with_url: URL(string: Constants.Api.topratedurl)!)
+                        
+                        case 2:
+                            self.apiModel.get_data(with_url: URL(string: Constants.Api.ontvurl)!)
+                        
+                        case 3:
+                        self.apiModel.get_data(with_url: URL(string: Constants.Api.airingurl)!)
+                        
+                        default:
+                            self.apiModel.get_data(with_url: URL(string: Constants.Api.popularurl)!)
+                    }
+                }
                 
                 LazyVGrid(columns: columns, spacing: 20){
                     ForEach(apiModel.response.results){ show in
@@ -85,24 +121,64 @@ struct Detail_view: View{
         ScrollView{
             ZStack{
                
-                URLImageView(urlString: "\(image)")
+                //CAMBIAR POR backdrop_path
+               URLImageView(urlString: image)
                 
                 VStack(alignment: .leading){
                     
-                    Text("Summary")
-                        .foregroundColor(Color("Verde"))
+                    HStack{
+                        
+                        VStack(alignment: .leading){
+                            Text("Summary")
+                                .foregroundColor(Color("Verde"))
+                            Text(title)
+                                .foregroundColor(.white)
+                                .font(.title2)
+                        }
+                        
+                        Spacer()
+                        
+                        ZStack{
+                            Circle()
+                                .foregroundColor(Color("Verde"))
+                                .frame(width:50, height: 50)
+                            
+                            Text("5.5")
+                                .foregroundColor(.white)
+                                .font(.title2)
+                        }
+                            .padding()
+                            .offset(y:-40)
+                    }
+                    
+                    
                         .padding(.leading)
                         .padding(.top)
                     
-                    Text(title)
-                        .foregroundColor(.white)
-                        .font(.title2)
-                        .padding(.leading)
-                    
+                                        
                     Text(txt_string)
                         .padding()
                         .foregroundColor(.white)
                         .font(.caption)
+                    
+                    HStack{
+                        Text("Created by: \(apiModel.showinfo.status)")
+                       /* ForEach(apiModel.showinfo.created_by){ creator in
+                            
+                            Text(creator.name)
+                        }
+                        */
+                        
+                        
+                    }
+                        .foregroundColor(.white)
+                        .padding(.leading)
+                        .font(.caption)
+                    
+                    Text("Cast")
+                        .foregroundColor(Color("Verde"))
+                        .padding(.leading)
+                        .padding(.top)
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         
@@ -139,9 +215,13 @@ struct Detail_view: View{
                 
                 .onAppear{
                     
-                    let url = URL(string: Constants.Api.casturl + "\(showId)/" + "credits?api_key=91b79e1c018c1a145c60282db74f86e7&language=en-US" )
+                    let showurl = URL(string: Constants.Api.showurl + "\(showId)" + "?api_key=\(Constants.Api.apikey)&language=en-US")
                     
-                    apiModel.get_cast_data(with_url: url!)
+                    self.apiModel.get_show_data(with_url: showurl!)
+                    
+                    let casturl = URL(string: Constants.Api.showurl + "\(showId)/" + "credits?api_key=\(Constants.Api.apikey)&language=en-US" )
+                    
+                    self.apiModel.get_cast_data(with_url: casturl!)
                 }//OnAppear
                 
             }//ZStack
@@ -167,7 +247,7 @@ extension Date {
         dateFormatterPrint.dateFormat = "MMM dd, yyyy"
         
         let date: Date? = dateFormatterGet.date(from: string)
-        print("Date",dateFormatterPrint.string(from: date!)) // Feb 01,2018
+        //print("Date",dateFormatterPrint.string(from: date!)) // Feb 01,2018
         return dateFormatterPrint.string(from: date!);
     }
 }

@@ -8,12 +8,12 @@
 import Foundation
 import Combine
 
-struct show_list_response: Decodable {
+struct Show_list_response: Decodable {
     var page: Int = 0
     var results: [Show] = [Show]()
 }
 
-struct cast_response: Decodable {
+struct Cast_response: Decodable {
     var cast: [Cast] = [Cast]()
 }
 
@@ -25,6 +25,7 @@ struct Show: Codable, Identifiable{
     let sinopsis: String
     let releaseDate: String
     let image: String
+    //let drop: String
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -33,6 +34,7 @@ struct Show: Codable, Identifiable{
         case sinopsis = "overview"
         case releaseDate = "first_air_date"
         case image = "poster_path"
+        //case drop = "backdrop_path"
     }
     
 }
@@ -50,12 +52,31 @@ struct Cast: Codable, Identifiable{
 
 }
 
+struct Show_detail_response: Decodable{
+    //var created_by: [Creator] = [Creator]()
+    var status: String = "name(s)"
+}
+
+
+struct Creator: Codable, Identifiable {
+    let id: Int
+    let name: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+    }
+    
+}
+
+
 class ApiServiceModel: ObservableObject{
     
-    @Published var response = show_list_response()
+    @Published var response = Show_list_response()
     @Published var error_message: String?
     
-    @Published var cast = cast_response()
+    @Published var showinfo = Show_detail_response()
+    @Published var cast = Cast_response()
     
     private var publisher_request: Cancellable? {
         didSet{ oldValue?.cancel() }
@@ -83,6 +104,27 @@ class ApiServiceModel: ObservableObject{
                 
             })
         
+    }
+    
+    func get_show_data( with_url: URL){
+        print("Iniciando Show request")
+        
+        publisher_request = api_request(with: with_url)
+        
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] value in
+                switch value{
+                    
+                case .finished:
+                    break
+                case .failure(let error):
+                    self?.error_message = error.localizedDescription
+                }
+            }, receiveValue: { [weak self] data in
+                
+                self?.showinfo = data
+                
+            })
     }
     
     func get_cast_data( with_url: URL ){
