@@ -8,12 +8,16 @@
 import Foundation
 import Combine
 
-struct movie_list_response: Decodable {
+struct show_list_response: Decodable {
     var page: Int = 0
-    var results: [Movie] = [Movie]()
+    var results: [Show] = [Show]()
 }
 
-struct Movie: Codable, Identifiable{
+struct cast_response: Decodable {
+    var cast: [Cast] = [Cast]()
+}
+
+struct Show: Codable, Identifiable{
     
     let id: Int
     let title: String
@@ -33,10 +37,25 @@ struct Movie: Codable, Identifiable{
     
 }
 
+struct Cast: Codable, Identifiable{
+    let id: Int
+    let name: String
+    let image: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case image = "profile_path"
+    }
+
+}
+
 class ApiServiceModel: ObservableObject{
     
-    @Published var response = movie_list_response()
+    @Published var response = show_list_response()
     @Published var error_message: String?
+    
+    @Published var cast = cast_response()
     
     private var publisher_request: Cancellable? {
         didSet{ oldValue?.cancel() }
@@ -47,7 +66,7 @@ class ApiServiceModel: ObservableObject{
     
     func get_data( with_url: URL ){
         
-        print("Iniciando request")
+        //print("Iniciando request")
         
         publisher_request = api_request(with: with_url)
             .receive(on: DispatchQueue.main)
@@ -61,6 +80,27 @@ class ApiServiceModel: ObservableObject{
                 }
             }, receiveValue: { [weak self] data in
                 self?.response = data
+                
+            })
+        
+    }
+    
+    func get_cast_data( with_url: URL ){
+        
+        //print("Iniciando Cast request")
+        
+        publisher_request = api_request(with: with_url)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] value in
+                switch value{
+                    
+                case .finished:
+                    break
+                case .failure(let error):
+                    self?.error_message = error.localizedDescription
+                }
+            }, receiveValue: { [weak self] data in
+                self?.cast = data
                 
             })
         

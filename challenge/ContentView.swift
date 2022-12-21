@@ -21,28 +21,40 @@ struct ContentView: View {
         NavigationView{
             
             ScrollView{
-
+                
                 LazyVGrid(columns: columns, spacing: 20){
-                    ForEach(apiModel.response.results){ movie in
+                    ForEach(apiModel.response.results){ show in
                         
-                        NavigationLink(destination: Detail_view(txt_string: movie.sinopsis)){
+                        NavigationLink(destination: Detail_view(txt_string: show.sinopsis, title: show.title, showId: show.id, image: show.image)){
                             
                             VStack(alignment: .leading){
-                                URLImageView(urlString: movie.image)
-                                Text("\(movie.title)")
+                                URLImageView(urlString: show.image)
+                                Text("\(show.title)")
                                     .font(.caption)
                                 HStack{
-                                    Text(Date.getFormattedDate(string: movie.releaseDate))
+                                    Text(Date.getFormattedDate(string: show.releaseDate))
                                         .font(.caption)
                                     Spacer()
                                     Image(systemName: "star.fill")
-                                    Text("\(movie.vote, specifier: "%.1f")")
+                                        .font(.caption)
+                                        .padding(0)
+                                    Text("\(show.vote, specifier: "%.1f")")
                                         .font(.caption)
                                 }
+                                
+                                Text("\(show.sinopsis)")
+                                    .font(.caption2)
+                                    .foregroundColor(.white)
+                                    .lineLimit(4)
+                                    .multilineTextAlignment(.leading)
                             }
+                            
                             .foregroundColor(Color("Verde"))
                                                         
                         }
+                        .padding(10)
+                        .background(Color("Gris"))
+                        .cornerRadius(15)
                         
                     }
                 }
@@ -63,12 +75,80 @@ struct ContentView: View {
 struct Detail_view: View{
     
     var txt_string: String
+    var title: String
+    var showId: Int
+    var image: String
+    @ObservedObject var apiModel = ApiServiceModel()
     
     var body: some View{
-        VStack{
-            Text(txt_string)
-                .padding()
+        
+        ScrollView{
+            ZStack{
+               
+                URLImageView(urlString: "\(image)")
+                
+                VStack(alignment: .leading){
+                    
+                    Text("Summary")
+                        .foregroundColor(Color("Verde"))
+                        .padding(.leading)
+                        .padding(.top)
+                    
+                    Text(title)
+                        .foregroundColor(.white)
+                        .font(.title2)
+                        .padding(.leading)
+                    
+                    Text(txt_string)
+                        .padding()
+                        .foregroundColor(.white)
+                        .font(.caption)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        
+                        HStack(){
+                            
+                            ForEach(apiModel.cast.cast){ castmember in
+                                VStack(spacing: 0){
+                                    
+                                    URLImageView(urlString: "\(castmember.image)")
+                                        .mask(Circle())
+                                        .frame(width: 180, height: 180)
+                                        .padding(0)
+                                    
+                                    Text(castmember.name)
+                                        .font(.caption)
+                                        .offset(y:-25)
+                                        .foregroundColor(.white)
+                                    
+                                }//VStack
+                                    .frame(width:130, height: 150)
+                                
+                            }//ForEach
+                            
+                        }//HStack
+                            .padding(.bottom)
+                        
+                    }//ScrollView
+                    
+                }//VStack
+                .background(Color("Gris"))
+                .padding(10)
+                .cornerRadius(15)
+                .offset(y:90)
+                
+                .onAppear{
+                    
+                    let url = URL(string: Constants.Api.casturl + "\(showId)/" + "credits?api_key=91b79e1c018c1a145c60282db74f86e7&language=en-US" )
+                    
+                    apiModel.get_cast_data(with_url: url!)
+                }//OnAppear
+                
+            }//ZStack
         }
+            .ignoresSafeArea()
+            .background(Color.black)
+        
     }
 }
 

@@ -24,11 +24,11 @@ class URLImageModel: ObservableObject{
     func loadImage(){
         
         if loadImageFromCache() {
-            print("image from cache")
+            //print("image from cache")
             return
         }
         
-        print("requesting image from URL")
+        //print("requesting image from URL")
         loadImageFromURL()
     }
     
