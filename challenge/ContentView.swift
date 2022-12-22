@@ -11,6 +11,7 @@ struct ContentView: View {
     
     @ObservedObject var apiModel = ApiServiceModel()
     @State var listLoaded: Bool = false
+    @State var presentUIView = false
     
     @State private var filter = 0
     
@@ -29,6 +30,15 @@ struct ContentView: View {
         NavigationView{
             
             ScrollView{
+                
+                Button("Present UIView") {
+                    presentUIView = true
+                }
+                .sheet(isPresented: $presentUIView) {
+                    theUIViewRepresentable()
+                }
+                .padding(.top)
+                .foregroundColor(.white)
                 
                 Picker("What is your favorite color?", selection: $filter) {
                    Text("Popular").tag(0)
@@ -332,4 +342,49 @@ extension View {
         self.modifier(NavigationBarModifier(backgroundColor: backgroundColor, titleColor: titleColor))
     }
 
+}
+
+struct theUIViewRepresentable: UIViewRepresentable {
+    typealias UIViewType = theUIView
+  
+    func makeUIView(context: Context) -> theUIView {
+        let view = theUIView()
+        return view
+    }
+    
+    func updateUIView(_ uiView: theUIView, context: Context) {
+        
+    }
+}
+
+class theUIView: UIView {
+    
+    private var label: UILabel = {
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "I'm a UIKit VIEW!!!"
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
+    init() {
+        super.init(frame: .zero)
+        
+        backgroundColor = UIColor(named: "Verde")
+        
+        addSubview(label)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+        ])
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
