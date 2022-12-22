@@ -39,6 +39,10 @@ struct Show: Codable, Identifiable{
     
 }
 
+struct Show_detail_response: Decodable {
+    var name = ""
+}
+
 struct Cast: Codable, Identifiable{
     let id: Int
     let name: String
@@ -50,18 +54,6 @@ struct Cast: Codable, Identifiable{
         case image = "profile_path"
     }
 
-}
-
-struct Show_detail_response: Decodable{
-    var created_by: [Creator]?
-    var homepage: String?
-    //var status: String = "name(s)"
-    
-    /*
-    enum CodingKeys: String, CodingKey {
-        case creators = "created_by"
-    }
-     */
 }
 
 
@@ -103,10 +95,10 @@ class ApiServiceModel: ObservableObject{
             .sink(receiveCompletion: { [weak self] value in
                 switch value{
                     
-                case .finished:
-                    break
-                case .failure(let error):
-                    self?.error_message = error.localizedDescription
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        self?.error_message = error.localizedDescription
                 }
             }, receiveValue: { [weak self] data in
                 self?.response = data
@@ -119,21 +111,20 @@ class ApiServiceModel: ObservableObject{
         print("Iniciando Show request")
         
         publisher_request = api_request(with: with_url)
-        
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] value in
                 switch value{
                     
-                case .finished:
-                    break
-                case .failure(let error):
-                    self?.error_message = error.localizedDescription
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        self?.error_message = error.localizedDescription
                 }
             }, receiveValue: { [weak self] data in
-                
                 self?.showinfo = data
                 
             })
+        print("Termina Show request")
     }
     
     func get_cast_data( with_url: URL ){
@@ -145,10 +136,10 @@ class ApiServiceModel: ObservableObject{
             .sink(receiveCompletion: { [weak self] value in
                 switch value{
                     
-                case .finished:
-                    break
-                case .failure(let error):
-                    self?.error_message = error.localizedDescription
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        self?.error_message = error.localizedDescription
                 }
             }, receiveValue: { [weak self] data in
                 self?.cast = data
@@ -171,10 +162,10 @@ class ApiServiceModel: ObservableObject{
             .sink(receiveCompletion: { [weak self] value in
                 switch value{
                     
-                case .finished:
-                    break
-                case .failure(let error):
-                    self?.error_message = error.localizedDescription
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        self?.error_message = error.localizedDescription
                 }
             }, receiveValue: { [weak self] data in
                 self?.response2 = data

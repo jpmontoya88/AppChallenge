@@ -127,6 +127,7 @@ struct ContentView: View {
             }//ScrollView
             .background(Color.black)
             .onAppear{
+                self.filter = 0
                 self.apiModel.get_data(with_url: URL(string: Constants.Api.popularurl + "\(1)")!)
             }
             .navigationTitle("TV Shows")
@@ -149,7 +150,6 @@ struct Detail_view: View{
         ScrollView{
             ZStack{
                
-                //CAMBIAR POR backdrop_path
                URLImageView(urlString: image)
                 
                 VStack(alignment: .leading){
@@ -189,6 +189,7 @@ struct Detail_view: View{
                         .foregroundColor(.white)
                         .font(.caption)
                     
+                    /*
                     HStack{
                         
                         if let creators = apiModel.showinfo.created_by{
@@ -204,49 +205,54 @@ struct Detail_view: View{
                         }else{
                             
                         }
-
+                        
                     }
                         .foregroundColor(.white)
                         .padding(.leading)
                         .font(.caption)
+                         */
                     
-                    Text("Cast")
-                        .foregroundColor(Color("Verde"))
-                        .padding(.leading)
-                        .padding(.top)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
+                    if apiModel.cast.cast.count > 0{
                         
-                        HStack(){
+                        Text("Cast")
+                            .foregroundColor(Color("Verde"))
+                            .padding(.leading)
+                            .padding(.top)
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
                             
-                            ForEach(apiModel.cast.cast){ castmember in
-                                VStack(spacing: 0){
-                                    
-                                    URLImageView(urlString: "\(castmember.image)")
-                                        .mask(Circle())
-                                        .frame(width: 180, height: 180)
-                                        .padding(0)
-                                    
-                                    Text(castmember.name)
-                                        .font(.caption)
-                                        .offset(y:-25)
-                                        .foregroundColor(.white)
-                                    
-                                }//VStack
-                                    .frame(width:130, height: 150)
+                            HStack(){
                                 
-                            }//ForEach
-                            
-                        }//HStack
+                                ForEach(apiModel.cast.cast){ castmember in
+                                    VStack(spacing: 0){
+                                        
+                                        URLImageView(urlString: "\(castmember.image)")
+                                            .mask(Circle())
+                                            .frame(width: 180, height: 180)
+                                            .padding(0)
+                                        
+                                        Text(castmember.name)
+                                            .font(.caption)
+                                            .offset(y:-25)
+                                            .foregroundColor(.white)
+                                        
+                                    }//VStack
+                                    .frame(width:130, height: 150)
+                                    
+                                }//ForEach
+                                
+                            }//HStack
                             .padding(.bottom)
+                            
+                        }//ScrollView
                         
-                    }//ScrollView
+                    }//IF
                     
                 }//VStack
                 .background(Color("Gris"))
                 .padding(10)
                 .cornerRadius(15)
-                .offset(y:90)
+                .offset(y:120)
                 
                 .onAppear{
                     

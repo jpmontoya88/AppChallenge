@@ -2,7 +2,7 @@
 //  challengeUITestsLaunchTests.swift
 //  challengeUITests
 //
-//  Created by Diego on 20.12.22.
+//  Created by JP Montoya on 20.12.22.
 //
 
 import XCTest

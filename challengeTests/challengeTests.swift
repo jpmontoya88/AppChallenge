@@ -2,34 +2,34 @@
 //  challengeTests.swift
 //  challengeTests
 //
-//  Created by Diego on 20.12.22.
+//  Created by JP Montoya on 20.12.22.
 //
 
+import Foundation
+import SwiftUI
 import XCTest
+@testable import challenge
 
 final class challengeTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    let apiModel = ApiServiceModel()
+    
+    func test_get_data() {
+        //XCTFail()
+        
+        XCTAssertNoThrow(apiModel.get_data(with_url: URL(string: "https://api.themoviedb.org/3/tv/popular?api_key=91b79e1c018c1a145c60282db74f86e7&language=en-US&page=1")!))
+        
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func test_decode() {
+        //XCTFail()
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func test_shouldLoadNextPage(){
+        
+        apiModel.response = Show_list_response(page: 1, results: [Show(id: 1, title: "Pitufo", vote: 5.5, sinopsis: "Papa pitufo consuma su plan de dominacion", releaseDate: "2022-12-10", image: "/pitufo.png", posterPath: nil)])
+        
+        XCTAssertFalse(apiModel.shouldLoadNextPage(id:0))
+        XCTAssertTrue(apiModel.shouldLoadNextPage(id:1))
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }

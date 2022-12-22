@@ -19,9 +19,12 @@ func api_request<T>(with url: URL)-> AnyPublisher<T, enum_error_type> where T:De
     return URLSession.shared.dataTaskPublisher(for: request)
         .mapError{ error in
             enum_error_type.connection(description: error.localizedDescription)
+            
         }
         .flatMap(maxPublishers: .max(1)){ response in
+            
             decode(data: response.data)
+            
         }
         .eraseToAnyPublisher()
 }

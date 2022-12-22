@@ -20,6 +20,7 @@
 		F1FA30EA2952B4F700B6C92F /* URLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1FA30E92952B4F700B6C92F /* URLImageView.swift */; };
 		F1FA30EC2952B5CB00B6C92F /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = F1FA30EB2952B5CB00B6C92F /* placeholder.png */; };
 		F1FA30EE2952B6BC00B6C92F /* URLImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1FA30ED2952B6BC00B6C92F /* URLImageModel.swift */; };
+		F1FF30BE295460760090B6BD /* popularShowList.json in Resources */ = {isa = PBXBuildFile; fileRef = F1FF30BD295460760090B6BD /* popularShowList.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,8 @@
 		F1FA30E92952B4F700B6C92F /* URLImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImageView.swift; sourceTree = "<group>"; };
 		F1FA30EB2952B5CB00B6C92F /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		F1FA30ED2952B6BC00B6C92F /* URLImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImageModel.swift; sourceTree = "<group>"; };
+		F1FF30BC29544A8C0090B6BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F1FF30BD295460760090B6BD /* popularShowList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = popularShowList.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +110,7 @@
 		F1F7255D295289D800416A5E /* challenge */ = {
 			isa = PBXGroup;
 			children = (
+				F1FF30BC29544A8C0090B6BD /* Info.plist */,
 				F1F7255E295289D800416A5E /* challengeApp.swift */,
 				F1F7258929528B9800416A5E /* ApiService.swift */,
 				F1F7258B29528F8800416A5E /* ApiServiceModel.swift */,
@@ -151,6 +155,7 @@
 			children = (
 				F1FA30EB2952B5CB00B6C92F /* placeholder.png */,
 				F1FA30E729529CAD00B6C92F /* Constants.swift */,
+				F1FF30BD295460760090B6BD /* popularShowList.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -259,6 +264,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1FF30BE295460760090B6BD /* popularShowList.json in Resources */,
 				F1F72567295289D900416A5E /* Preview Assets.xcassets in Resources */,
 				F1FA30EC2952B5CB00B6C92F /* placeholder.png in Resources */,
 				F1F72563295289D900416A5E /* Assets.xcassets in Resources */,
@@ -449,6 +455,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"challenge/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = challenge/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -485,6 +492,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"challenge/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = challenge/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
