@@ -42,26 +42,26 @@ struct ContentView: View {
                 .onChange(of: filter){ value in
                     switch value {
                         case 0:
-                            self.apiModel.get_data(with_url: URL(string: Constants.Api.popularurl)!)
+                            self.apiModel.get_data(with_url: URL(string: Constants.Api.popularurl + "\(1)")!)
                         
                         case 1:
-                            self.apiModel.get_data(with_url: URL(string: Constants.Api.topratedurl)!)
+                            self.apiModel.get_data(with_url: URL(string: Constants.Api.topratedurl + "\(1)")!)
                         
                         case 2:
-                            self.apiModel.get_data(with_url: URL(string: Constants.Api.ontvurl)!)
+                            self.apiModel.get_data(with_url: URL(string: Constants.Api.ontvurl + "\(1)")!)
                         
                         case 3:
-                        self.apiModel.get_data(with_url: URL(string: Constants.Api.airingurl)!)
+                        self.apiModel.get_data(with_url: URL(string: Constants.Api.airingurl + "\(1)")!)
                         
                         default:
-                            self.apiModel.get_data(with_url: URL(string: Constants.Api.popularurl)!)
+                            self.apiModel.get_data(with_url: URL(string: Constants.Api.popularurl + "\(1)")!)
                     }
                 }
                 
                 LazyVGrid(columns: columns, spacing: 20){
                     ForEach(apiModel.response.results){ show in
                         
-                        NavigationLink(destination: Detail_view(txt_string: show.sinopsis, title: show.title, showId: show.id, image: show.image)){
+                        NavigationLink(destination: Detail_view(txt_string: show.sinopsis, title: show.title, showId: show.id, image: show.posterPath ?? show.image) ) {
                             
                             VStack(alignment: .leading){
                                 URLImageView(urlString: show.image)
@@ -84,13 +84,41 @@ struct ContentView: View {
                                     .lineLimit(4)
                                     .multilineTextAlignment(.leading)
                             }
-                            
                             .foregroundColor(Color("Verde"))
+                            .onAppear{
+                                if apiModel.shouldLoadNextPage(id: show.id) {
+                                    
+                                    switch filter{
+                                        case 0:
+                                            let page = apiModel.response.page + 1
+                                            apiModel.get_next_page(with_url: URL(string: Constants.Api.popularurl + "\(page)")!)
+                                        
+                                        case 1:
+                                            let page = apiModel.response.page + 1
+                                            apiModel.get_next_page(with_url: URL(string: Constants.Api.topratedurl + "\(page)")!)
+                                        
+                                        case 2:
+                                            let page = apiModel.response.page + 1
+                                            apiModel.get_next_page(with_url: URL(string: Constants.Api.ontvurl + "\(page)")!)
+                                        
+                                        case 3:
+                                            let page = apiModel.response.page + 1
+                                            apiModel.get_next_page(with_url: URL(string: Constants.Api.ontvurl + "\(page)")!)
+                                        
+                                        default:
+                                            let page = apiModel.response.page + 1
+                                        apiModel.get_next_page(with_url: URL(string: Constants.Api.airingurl + "\(page)")!)
+                                    }
+                                    
+                                    
+                                }
+                            }
                                                         
                         }
                         .padding(10)
                         .background(Color("Gris"))
                         .cornerRadius(15)
+                        
                         
                     }
                 }
@@ -99,7 +127,7 @@ struct ContentView: View {
             }//ScrollView
             .background(Color.black)
             .onAppear{
-                self.apiModel.get_data(with_url: URL(string: Constants.Api.popularurl)!)
+                self.apiModel.get_data(with_url: URL(string: Constants.Api.popularurl + "\(1)")!)
             }
             .navigationTitle("TV Shows")
             .navigationBarTitleDisplayMode(.inline)
@@ -162,14 +190,21 @@ struct Detail_view: View{
                         .font(.caption)
                     
                     HStack{
-                        Text("Created by: \(apiModel.showinfo.status)")
-                       /* ForEach(apiModel.showinfo.created_by){ creator in
+                        
+                        if let creators = apiModel.showinfo.created_by{
                             
-                            Text(creator.name)
+                            ForEach(creators){ creator in
+                                
+                                Text("Created by: ")
+                                
+                                 Text(creator.name)
+                                    .foregroundColor(.white)
+                             }
+                            
+                        }else{
+                            
                         }
-                        */
-                        
-                        
+
                     }
                         .foregroundColor(.white)
                         .padding(.leading)

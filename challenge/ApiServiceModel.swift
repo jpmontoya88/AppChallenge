@@ -25,7 +25,7 @@ struct Show: Codable, Identifiable{
     let sinopsis: String
     let releaseDate: String
     let image: String
-    //let drop: String
+    let posterPath: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -34,7 +34,7 @@ struct Show: Codable, Identifiable{
         case sinopsis = "overview"
         case releaseDate = "first_air_date"
         case image = "poster_path"
-        //case drop = "backdrop_path"
+        case posterPath = "backdrop_path"
     }
     
 }
@@ -53,12 +53,20 @@ struct Cast: Codable, Identifiable{
 }
 
 struct Show_detail_response: Decodable{
-    //var created_by: [Creator] = [Creator]()
-    var status: String = "name(s)"
+    var created_by: [Creator]?
+    var homepage: String?
+    //var status: String = "name(s)"
+    
+    /*
+    enum CodingKeys: String, CodingKey {
+        case creators = "created_by"
+    }
+     */
 }
 
 
 struct Creator: Codable, Identifiable {
+    
     let id: Int
     let name: String
     
@@ -73,6 +81,7 @@ struct Creator: Codable, Identifiable {
 class ApiServiceModel: ObservableObject{
     
     @Published var response = Show_list_response()
+    @Published var response2 = Show_list_response()
     @Published var error_message: String?
     
     @Published var showinfo = Show_detail_response()
@@ -146,6 +155,34 @@ class ApiServiceModel: ObservableObject{
                 
             })
         
+    }
+    
+    func shouldLoadNextPage(id: Int) -> Bool {
+        if self.response.results.count > 0 {
+            return id == self.response.results.last?.id
+        }else{
+            return false
+        }
+    }
+    
+    func get_next_page( with_url: URL ){
+        publisher_request = api_request(with: with_url)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] value in
+                switch value{
+                    
+                case .finished:
+                    break
+                case .failure(let error):
+                    self?.error_message = error.localizedDescription
+                }
+            }, receiveValue: { [weak self] data in
+                self?.response2 = data
+                
+            })
+        
+        self.response.results.append(contentsOf: self.response2.results)
+        self.response.page = self.response2.page
     }
     
 }
