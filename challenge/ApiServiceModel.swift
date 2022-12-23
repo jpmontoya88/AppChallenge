@@ -42,7 +42,10 @@ struct Show: Codable, Identifiable{
 struct Show_detail_response: Decodable {
     var id = 0
     var name = ""
-    var created_by = [Creator]()
+    var created_by: [Creator] = [Creator]()
+    var in_production: Bool = false
+    var vote_average: Float = 0.0
+    var seasons: [Season] = [Season]()
 }
 
 struct Cast: Codable, Identifiable{
@@ -58,7 +61,6 @@ struct Cast: Codable, Identifiable{
 
 }
 
-
 struct Creator: Codable, Identifiable {
     
     let id: Int
@@ -71,6 +73,23 @@ struct Creator: Codable, Identifiable {
     
 }
 
+struct Season: Codable, Identifiable{
+    let id: Int
+    let name: String
+    let season_number: Int
+}
+
+struct Season_response: Decodable{
+    var air_date: String = ""
+    var episodes: [Episode] = [Episode]()
+    var name: String = ""
+}
+
+struct Episode: Codable, Identifiable{
+    let id: Int
+    let name: String
+    let still_path: String
+}
 
 class ApiServiceModel: ObservableObject{
     
@@ -79,6 +98,7 @@ class ApiServiceModel: ObservableObject{
     @Published var error_message: String?
     
     @Published var showinfo = Show_detail_response()
+    @Published var seasoninfo = Season_response()
     @Published var cast = Cast_response()
     
     private var publisher_request: Cancellable? {
@@ -110,7 +130,7 @@ class ApiServiceModel: ObservableObject{
     }
     
     func get_show_data( with_url: URL){
-        print("Iniciando Show request")
+        //print("Iniciando Show request")
         
         publisher_request = api_request(with: with_url)
             .receive(on: DispatchQueue.main)
@@ -118,8 +138,12 @@ class ApiServiceModel: ObservableObject{
                 switch value{
                     
                     case .finished:
-                    let casturl = URL(string: Constants.Api.showurl + "\(self!.showinfo.id)/" + "credits?api_key=\(Constants.Api.apikey)&language=en-US" )
-                        self!.get_cast_data(with_url: casturl!)
+                        
+                        let lastSeasonNumber = self!.showinfo.seasons.last?.season_number
+                    
+                        let seasonurl = URL(string: Constants.Api.showurl + "\(self!.showinfo.id)/" + "season/\(lastSeasonNumber!)" + "?api_key=\(Constants.Api.apikey)&language=en-US" )
+                    
+                        self!.get_season_data(with_url: seasonurl!)
                         break
                     case .failure(let error):
                         self?.error_message = error.localizedDescription
@@ -128,11 +152,31 @@ class ApiServiceModel: ObservableObject{
                 self?.showinfo = data
                 
             })
-        print("Termina Show request")
-        print("Iniciando Cast request")
+        //print("Termina Show request")
         
     }
-
+    
+    func get_season_data(with_url: URL){
+        
+        print("Iniciando Season request")
+        
+        publisher_request = api_request(with: with_url)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] value in
+                switch value{
+                    
+                    case .finished:
+                        let casturl = URL(string: Constants.Api.showurl + "\(self!.showinfo.id)/" + "credits?api_key=\(Constants.Api.apikey)&language=en-US" )
+                    self!.get_cast_data(with_url: casturl!)
+                        break
+                    case .failure(let error):
+                        self?.error_message = error.localizedDescription
+                }
+            }, receiveValue: { [weak self] data in
+                self?.seasoninfo = data
+                
+            })
+    }
     
     func get_cast_data( with_url: URL ){
         

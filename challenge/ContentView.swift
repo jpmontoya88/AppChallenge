@@ -157,11 +157,15 @@ struct Detail_view: View{
     
     var body: some View{
         
-        ScrollView{
-            ZStack{
-               
-               URLImageView(urlString: image)
-                
+        
+            
+        ZStack{
+           
+           URLImageView(urlString: image)
+                .offset(y:-200)
+            
+            ScrollView{
+            
                 VStack(alignment: .leading){
                     
                     HStack{
@@ -172,6 +176,7 @@ struct Detail_view: View{
                             Text(title)
                                 .foregroundColor(.white)
                                 .font(.title2)
+                                .bold()
                         }
                         
                         Spacer()
@@ -181,7 +186,7 @@ struct Detail_view: View{
                                 .foregroundColor(Color("Verde"))
                                 .frame(width:50, height: 50)
                             
-                            Text("5.5")
+                            Text("\(apiModel.showinfo.vote_average, specifier: "%.1f")")
                                 .foregroundColor(.white)
                                 .font(.title2)
                         }
@@ -202,17 +207,19 @@ struct Detail_view: View{
                     
                     HStack{
                         
-                        if let creators = apiModel.showinfo.created_by{
+                        if let creators = apiModel.showinfo.created_by, apiModel.showinfo.created_by.count > 0{
                             Text("Created by: ")
                             
                             ForEach(creators){ creator in
                                 
                                 if (creator.name != apiModel.showinfo.created_by.last?.name){
                                     Text(creator.name + ",")
+                                        .bold()
                                         .padding(0)
                 
                                 }else{
                                     Text(creator.name)
+                                        .bold()
                                         .padding(0)
                                 }
                                 
@@ -226,12 +233,64 @@ struct Detail_view: View{
                         .padding(.leading)
                         .font(.caption)
                     
+                    if apiModel.showinfo.seasons.count > 0{
+                        
+                        if apiModel.showinfo.in_production, apiModel.seasoninfo.name != ""{
+                            Text("Current Season:")
+                                .font(.subheadline)
+                                .foregroundColor(Color("Verde"))
+                                .padding(.leading)
+                                .padding(.top)
+                        }else if apiModel.seasoninfo.name != "" {
+                            Text("Last Season:")
+                                .font(.subheadline)
+                                .foregroundColor(Color("Verde"))
+                                .padding(.leading)
+                                .padding(.top)
+                        }
+                        
+                        Text(apiModel.seasoninfo.name)
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding(.leading)
+                        
+                        if apiModel.seasoninfo.air_date != ""{
+                            Text(Date.getFormattedDate(string:apiModel.seasoninfo.air_date))
+                                .font(.caption2)
+                                .foregroundColor(Color("Verde"))
+                                .padding(.leading)
+                        }
+
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            
+                            HStack(){
+                                
+                                ForEach(apiModel.seasoninfo.episodes){
+                                    episode in
+                                    
+                                    VStack{
+                                        URLImageView(urlString: "\(episode.still_path)")
+                                            .frame(width: 150)
+                                            .padding(0)
+                                        
+                                        Text(episode.name)
+                                            .font(.caption)
+                                            .offset(y:-25)
+                                            .foregroundColor(.white)
+                                    }
+                                }
+                                
+                            }//HStack
+                        }//Scroll
+                        
+                    }// IF SEASONS
+                    
                     if apiModel.cast.cast.count > 0{
                         
                         Text("Cast")
                             .foregroundColor(Color("Verde"))
                             .padding(.leading)
-                            .padding(.top)
+                            //.padding(.top)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             
@@ -262,24 +321,28 @@ struct Detail_view: View{
                         
                     }//IF
                     
+                    Spacer()
+                    
                 }//VStack
-                .background(Color("Gris"))
-                .padding(10)
-                .cornerRadius(15)
-                .offset(y:120)
-                
-                .onAppear{
+                    .background(Color("Gris"))
+                    .cornerRadius(15)
+                    .padding(10)
+                    .offset(y:120)
+                    .onAppear{
                     
                     let showurl = URL(string: Constants.Api.showurl + "\(showId)" + "?api_key=\(Constants.Api.apikey)&language=en-US")
                                         
                     self.apiModel.get_show_data(with_url: showurl!)
                     
                 }//OnAppear
-                
-            }//ZStack
-        }
-            .ignoresSafeArea()
-            .background(Color.black)
+            
+            }//Scroll
+            
+        }//ZStack
+        
+        .ignoresSafeArea()
+        .background(Color.black)
+            
         
     }
 }
@@ -300,6 +363,7 @@ extension Date {
         
         let date: Date? = dateFormatterGet.date(from: string)
         //print("Date",dateFormatterPrint.string(from: date!)) // Feb 01,2018
+        
         return dateFormatterPrint.string(from: date!);
     }
 }
