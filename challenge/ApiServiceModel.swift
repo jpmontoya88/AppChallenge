@@ -40,7 +40,9 @@ struct Show: Codable, Identifiable{
 }
 
 struct Show_detail_response: Decodable {
+    var id = 0
     var name = ""
+    var created_by = [Creator]()
 }
 
 struct Cast: Codable, Identifiable{
@@ -116,6 +118,8 @@ class ApiServiceModel: ObservableObject{
                 switch value{
                     
                     case .finished:
+                    let casturl = URL(string: Constants.Api.showurl + "\(self!.showinfo.id)/" + "credits?api_key=\(Constants.Api.apikey)&language=en-US" )
+                        self!.get_cast_data(with_url: casturl!)
                         break
                     case .failure(let error):
                         self?.error_message = error.localizedDescription
@@ -125,7 +129,10 @@ class ApiServiceModel: ObservableObject{
                 
             })
         print("Termina Show request")
+        print("Iniciando Cast request")
+        
     }
+
     
     func get_cast_data( with_url: URL ){
         
@@ -150,7 +157,10 @@ class ApiServiceModel: ObservableObject{
     
     func shouldLoadNextPage(id: Int) -> Bool {
         if self.response.results.count > 0 {
-            return id == self.response.results.last?.id
+            
+            let arraySlice = self.response.results.suffix(4)
+            
+            return id == arraySlice.first?.id
         }else{
             return false
         }

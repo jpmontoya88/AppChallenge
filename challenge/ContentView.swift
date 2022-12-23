@@ -199,20 +199,25 @@ struct Detail_view: View{
                         .foregroundColor(.white)
                         .font(.caption)
                     
-                    /*
+                    
                     HStack{
                         
                         if let creators = apiModel.showinfo.created_by{
+                            Text("Created by: ")
                             
                             ForEach(creators){ creator in
                                 
-                                Text("Created by: ")
+                                if (creator.name != apiModel.showinfo.created_by.last?.name){
+                                    Text(creator.name + ",")
+                                        .padding(0)
+                
+                                }else{
+                                    Text(creator.name)
+                                        .padding(0)
+                                }
                                 
-                                 Text(creator.name)
-                                    .foregroundColor(.white)
+                                 
                              }
-                            
-                        }else{
                             
                         }
                         
@@ -220,7 +225,6 @@ struct Detail_view: View{
                         .foregroundColor(.white)
                         .padding(.leading)
                         .font(.caption)
-                         */
                     
                     if apiModel.cast.cast.count > 0{
                         
@@ -267,12 +271,9 @@ struct Detail_view: View{
                 .onAppear{
                     
                     let showurl = URL(string: Constants.Api.showurl + "\(showId)" + "?api_key=\(Constants.Api.apikey)&language=en-US")
-                    
+                                        
                     self.apiModel.get_show_data(with_url: showurl!)
                     
-                    let casturl = URL(string: Constants.Api.showurl + "\(showId)/" + "credits?api_key=\(Constants.Api.apikey)&language=en-US" )
-                    
-                    self.apiModel.get_cast_data(with_url: casturl!)
                 }//OnAppear
                 
             }//ZStack
