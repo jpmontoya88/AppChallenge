@@ -21,8 +21,15 @@ final class challengeTests: XCTestCase {
         
     }
 
-    func test_decode() {
+    func test_get_nextpage() {
         //XCTFail()
+        if let url = Bundle.main.url(forResource: "popularShowList", withExtension: "json") {
+
+                    
+            XCTAssertNoThrow(apiModel.get_next_page(with_url: url),"yyyesss")
+
+        }
+
     }
     
     func test_shouldLoadNextPage(){

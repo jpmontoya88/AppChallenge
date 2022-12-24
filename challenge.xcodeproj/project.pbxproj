@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD14550F2956674900C3A647 /* Detail_view.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD14550E2956674900C3A647 /* Detail_view.swift */; };
 		F1F7255F295289D800416A5E /* challengeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F7255E295289D800416A5E /* challengeApp.swift */; };
 		F1F72561295289D800416A5E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F72560295289D800416A5E /* ContentView.swift */; };
 		F1F72563295289D900416A5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1F72562295289D900416A5E /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AD14550E2956674900C3A647 /* Detail_view.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail_view.swift; sourceTree = "<group>"; };
 		F1F7255B295289D800416A5E /* challenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = challenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1F7255E295289D800416A5E /* challengeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = challengeApp.swift; sourceTree = "<group>"; };
 		F1F72560295289D800416A5E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				F1F72560295289D800416A5E /* ContentView.swift */,
 				F1FA30E92952B4F700B6C92F /* URLImageView.swift */,
 				F1FA30ED2952B6BC00B6C92F /* URLImageModel.swift */,
+				AD14550E2956674900C3A647 /* Detail_view.swift */,
 				F1FA30E6295297B400B6C92F /* Resources */,
 				F1F72562295289D900416A5E /* Assets.xcassets */,
 				F1F72564295289D900416A5E /* challenge.entitlements */,
@@ -293,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1FA30E829529CAD00B6C92F /* Constants.swift in Sources */,
+				AD14550F2956674900C3A647 /* Detail_view.swift in Sources */,
 				F1F7258C29528F8800416A5E /* ApiServiceModel.swift in Sources */,
 				F1FA30EA2952B4F700B6C92F /* URLImageView.swift in Sources */,
 				F1F72561295289D800416A5E /* ContentView.swift in Sources */,
